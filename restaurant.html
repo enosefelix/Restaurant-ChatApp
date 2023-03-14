@@ -201,7 +201,7 @@
             />
           </div>
           <div class="bot-name">
-            <b><p class="logo">Sth Restaurant</p></b>
+            <b><p class="logo">Delight-Full Restaurant</p></b>
             <p class="status">Online</p>
           </div>
         </div>
@@ -371,7 +371,7 @@
                 "bot-message",
                 `Here is your current order: ${current_order.join(
                   ", "
-                )}\n98: Current Order\n99: Checkout`
+                )}\n98: Order History\n99: Checkout`
               );
             }
           } else {
@@ -440,7 +440,7 @@
                 "bot-message",
                 `Here is your current order: ${current_order.join(
                   ", "
-                )}\n98: Current Order\n99: Checkout\n0: Cancel Order`
+                )}\n98: Order History\n99: Checkout\n0: Cancel Order`
               );
             }
           } else if (message === "98") {
@@ -547,7 +547,7 @@
       socket.on("connect", () => {
         localStorage.setItem("sessionId", socket.id);
         appendMessage(
-          `Welcome to sth restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
+          `Welcome to Delight-Full restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
           "bot"
         );
       });
