@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Chatbot</title>
+    <style>
+      /* Custom scrollbar styles */
+      ::-webkit-scrollbar {
+        width: 15px; /* Width of the scrollbar */
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgb(0, 0, 0);
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      #chatContainer {
+        width: 676px;
+        margin: 0 auto;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgb(196, 196, 196);
+      }
+
+      #chatBox {
+        height: 60vh;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+      }
+
+      #inputContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      #inputField {
+        flex-grow: 1;
+        height: 50px;
+        padding: 0 16px;
+        border: none;
+        border-radius: 1px;
+        background-color: #ffffff;
+        font-size: 16px;
+      }
+
+      #sendButton {
+        margin-left: -90px;
+        height: 40px;
+        width: 80px;
+        border: none;
+        border-radius: 10px;
+        background-color: #ffffff;
+        color: #1e90ff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .message-outer-container {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        color: white;
+        gap: 10px;
+        align-items: flex-end;
+      }
+
+      .message-outer-container.user {
+        justify-content: flex-end;
+      }
+
+      #bot {
+        padding: 15px 20px;
+        background: #e6e7e7;
+        border-radius: 10px;
+        max-width: 100%;
+        color: rgb(70, 68, 68);
+        position: relative;
+      }
+
+      #bot::before {
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 20px 20px 0px 0px;
+        border-bottom-left-radius: 10px;
+        border-color: transparent #e6e7e7 transparent transparent;
+        bottom: 0px;
+        left: -10px;
+      }
+
+      #user {
+        padding: 15px 20px;
+        background: #5fd3ff;
+        border-radius: 10px;
+        max-width: 100%;
+        color: white;
+        position: relative;
+      }
+
+      #user::after {
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 20px 0px 0px 20px;
+        border-color: transparent transparent transparent #5fd3ff;
+        border-bottom-right-radius: 10px;
+        bottom: 0px;
+        right: -10px;
+      }
+
+      #bot-name {
+        background-image: linear-gradient(to right, #10c3d6, #04a7f3);
+        height: 70px;
+        margin: 0;
+        padding: 8px 20px;
+        padding-left: 5rem;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: white;
+      }
+
+      .bot-image {
+        width: 50px;
+        padding-top: 10px;
+      }
+
+      .img {
+        max-width: 40px;
+        height: 30px;
+        padding-bottom: 25px;
+      }
+
+      .status {
+        font-size: small;
+        margin-top: -20px;
+      }
+
+      .timestamp {
+        font-size: 0.65em;
+        color: rgb(180, 180, 180);
+      }
+
+      @media only screen and (max-width: 600px) {
+        #chatBox {
+          height: 494px;
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          overflow-y: scroll;
+          scroll-behavior: smooth;
+        }
+
+        body {
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+            sans-serif;
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+    <script
+      src="https://kit.fontawesome.com/184e1b79bc.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <main>
+      <div id="chatContainer">
+        <div id="bot-name">
+          <div class="bot-image-container">
+            <img
+              src="https://imgs.search.brave.com/LU4Q-vivDB9VQQV6S_mbudSYN2edlw7DgxzOVPDzNa8/rs:fit:650:650:1/g:ce/aHR0cHM6Ly9zdXBw/b3J0LnVwd29yay5j/b20vaGMvYXJ0aWNs/ZV9hdHRhY2htZW50/cy8zNjAwNDA0NzQw/MzQvY2hhdGJvdC1k/YXRhLnBuZw"
+              alt="bot image"
+              class="bot-image"
+            />
+          </div>
+          <div class="bot-name">
+            <b><p class="logo">Sth Restaurant</p></b>
+            <p class="status">Online</p>
+          </div>
+        </div>
+        <div id="chatBox"></div>
+        <div id="inputContainer">
+          <input
+            type="text"
+            id="inputField"
+            placeholder="Type your message here..."
+          />
+          <button id="sendButton">
+            <i class="fa-regular fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      // Establish a socket connection to the server
+      const socket = io(window.location.origin, {
+        query: {
+          sessionId: localStorage.getItem("sessionId"),
+        },
+      });
+
+      // Query DOM elements
+      const inputField = document.getElementById("inputField");
+      const chatBox = document.getElementById("chatBox");
+      const sendButton = document.getElementById("sendButton");
+      const bot_img = document.querySelector("bot-image");
+
+      // Helper function to append a message to the chat box
+      function appendMessage(message, sender) {
+        const messageElement = document.createElement("div");
+        messageElement.className = "message-text";
+        messageElement.id = sender;
+        messageElement.textContent = message;
+
+        const timestamp = new Date().toLocaleTimeString(); // create timestamp
+        const timestampElement = document.createElement("span"); // create span element for timestamp
+        timestampElement.className = "timestamp";
+        timestampElement.textContent = timestamp;
+
+        const messageContainer = document.createElement("div");
+        const messageOuterContainer = document.createElement("div");
+        messageContainer.className = "message-container " + sender;
+        messageOuterContainer.className = "message-outer-container " + sender;
+        messageElement.innerHTML = message.replace(/\n/g, "<br>");
+        messageContainer.appendChild(messageElement);
+        messageContainer.appendChild(timestampElement);
+
+        // Append image element if sender is "bot"
+        if (sender === "bot") {
+          const botImg = document.createElement("img");
+          botImg.className = "chat-bot-image img";
+          botImg.src =
+            "https://imgs.search.brave.com/LU4Q-vivDB9VQQV6S_mbudSYN2edlw7DgxzOVPDzNa8/rs:fit:650:650:1/g:ce/aHR0cHM6Ly9zdXBw/b3J0LnVwd29yay5j/b20vaGMvYXJ0aWNs/ZV9hdHRhY2htZW50/cy8zNjAwNDA0NzQw/MzQvY2hhdGJvdC1k/YXRhLnBuZw";
+          messageOuterContainer.appendChild(botImg);
+          messageOuterContainer.appendChild(messageContainer);
+        }
+        // Append image element if sender is "bot"
+        else if (sender === "user") {
+          messageOuterContainer.appendChild(messageContainer);
+          const userImg = document.createElement("img");
+          userImg.className = "chat-user-image img";
+          userImg.src =
+            "https://imgs.search.brave.com/fj0MaXPTBeUmgYu5oysa2PES9fPxsJtp44udiuY3voE/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODVlNGJmM2NiMTFi/MjI3NDkxYzMzOWEu/cG5n";
+          messageOuterContainer.appendChild(userImg);
+        }
+        chatBox.appendChild(messageOuterContainer);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      // Handle sending messages
+      // Define state variables
+      let current_order = [];
+      let order_history = [];
+      let isPlacingOrder = false;
+
+      function sendMessage() {
+        const message = inputField.value;
+        if (message === "") {
+          return;
+        }
+        appendMessage(message, "user");
+
+        if (!isPlacingOrder) {
+          // User is not currently placing an order
+          if (message === "1") {
+            // User wants to start placing an order
+            socket.emit(
+              "bot-message",
+              "Here is a list of items you can order:\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History"
+            );
+            isPlacingOrder = true;
+          } else if (message === "98") {
+            // User wants to see order history
+            if (order_history.length < 1) {
+              socket.emit(
+                "bot-message",
+                "Wow Such empty\n\nSelect below to Order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n 97: Current Order\n99: Checkout"
+              );
+              isPlacingOrder = true;
+              if (
+                message === "1" ||
+                message === "2" ||
+                message === "3" ||
+                message === "4" ||
+                message === "5" ||
+                message === "6" ||
+                message === "7" ||
+                message === "8" ||
+                message === "9" ||
+                message === "10" ||
+                message === "11" ||
+                message === "12" ||
+                message === "13" ||
+                message === "14" ||
+                message === "15" ||
+                message === "16" ||
+                message === "17" ||
+                message === "18" ||
+                message === "19" ||
+                message === "20"
+              ) {
+                // User has selected an item to order
+                current_order.push(getItemName(message));
+                socket.emit(
+                  "bot-message",
+                  `${getItemName(message)} has been added to your order.\n
+        Do you want to add more items to your order?\n Select the options below\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
+                );
+              }
+            } else if (order_history.length > 0) {
+              isPlacingOrder = true;
+              let orderHistoryMessage = "";
+              const arr = [
+                "First",
+                "Second",
+                "Third",
+                "Fourth",
+                "Fifth",
+                "Seventh",
+                "Eight",
+                "Ninth",
+                "Tenth",
+              ];
+              for (let i = 0; i < order_history.length; i++) {
+                orderHistoryMessage +=
+                  arr[i] + " Order: " + order_history[i].join(", ") + "\n";
+                socket.emit(
+                  "bot-message",
+                  `${orderHistoryMessage}\n\nSelect below to continue order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n99: Checkout\n0: Cancel Order`
+                );
+              }
+            }
+          } else if (message === "97") {
+            if (current_order.length < 1) {
+              isPlacingOrder = true;
+              socket.emit(
+                "bot-message",
+                "No current order\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n98: Order History\n99: Checkout"
+              );
+            } else {
+              isPlacingOrder = true;
+              socket.emit(
+                "bot-message",
+                `Here is your current order: ${current_order.join(
+                  ", "
+                )}\n98: Current Order\n99: Checkout`
+              );
+            }
+          } else {
+            socket.emit(
+              "bot-message",
+              "Invalid input\nSelect\n 1: To Place an order\n97: Current Order\n98: to see order history"
+            );
+          }
+          inputField.value = "";
+        } else {
+          // User is currently placing an order
+          if (
+            message === "1" ||
+            message === "2" ||
+            message === "3" ||
+            message === "4" ||
+            message === "5" ||
+            message === "6" ||
+            message === "7" ||
+            message === "8" ||
+            message === "9" ||
+            message === "10" ||
+            message === "11" ||
+            message === "12" ||
+            message === "13" ||
+            message === "14" ||
+            message === "15" ||
+            message === "16" ||
+            message === "17" ||
+            message === "18" ||
+            message === "19" ||
+            message === "20"
+          ) {
+            // User has selected an item to order
+            current_order.push(getItemName(message));
+            socket.emit(
+              "bot-message",
+              `${getItemName(message)} has been added to your order.\n
+        Do you want to add more items to your order?\n Select the options below\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
+            );
+          } else if (message === "99") {
+            // User wants to checkout
+            if (current_order.length < 1) {
+              socket.emit(
+                "bot-message",
+                "No order to place.\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n 98: Order History"
+              );
+            } else {
+              socket.emit(
+                "bot-message",
+                "Order placed.\n 1: Place new order\n 97: Current Order\n 98: Order History\n 0: Cancel Order"
+              );
+              let order = [];
+              order.push(current_order);
+              order_history.push(current_order);
+              current_order = [];
+            }
+          } else if (message === "97") {
+            if (current_order.length < 1) {
+              socket.emit(
+                "bot-message",
+                "No current order\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n 98: Order History\n99: Checkout"
+              );
+            } else {
+              socket.emit(
+                "bot-message",
+                `Here is your current order: ${current_order.join(
+                  ", "
+                )}\n98: Current Order\n99: Checkout\n0: Cancel Order`
+              );
+            }
+          } else if (message === "98") {
+            // User wants to see order history
+            if (order_history.length < 1) {
+              socket.emit(
+                "bot-message",
+                "Wow Such empty\n\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n99: Checkout"
+              );
+            } else if (order_history.length > 0) {
+              let orderHistoryMessage = "";
+              const arr = [
+                "First",
+                "Second",
+                "Third",
+                "Fourth",
+                "Fifth",
+                "Seventh",
+                "Eight",
+                "Ninth",
+                "Tenth",
+              ];
+              for (let i = 0; i < order_history.length; i++) {
+                orderHistoryMessage +=
+                  arr[i] + " Order: " + order_history[i].join(", ") + "\n";
+                socket.emit(
+                  "bot-message",
+                  `${orderHistoryMessage}\n\nSelect below to continue order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n99: Checkout\n0: Cancel Order`
+                );
+              }
+            }
+          } else if (message === "0") {
+            // User wants to cancel the order
+            if (order_history.length < 1) {
+              socket.emit(
+                "bot-message",
+                "No order to cancel\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n 97: Current Order\n 98: Order History"
+              );
+            } else {
+              isPlacingOrder = false;
+              order_history.pop(order_history);
+              socket.emit(
+                "bot-message",
+                "Order cancelled.\n 1: Place an Order\n97: Current Order\n98: Order History"
+              );
+            }
+          } else {
+            socket.emit(
+              "bot-message",
+              "Invalid input\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n 98: Order History\n 0: Cancel Order"
+            );
+          }
+          inputField.value = "";
+        }
+
+        inputField.value = "";
+      }
+
+      function getItemName(itemNumber) {
+        switch (itemNumber) {
+          case "1":
+            return "Italian Rice";
+          case "2":
+            return "Noodles";
+          case "3":
+            return "Spaghetti";
+          case "4":
+            return "Bread and Beans";
+          case "5":
+            return "Semo and Egusi";
+          case "6":
+            return "Amala and Ewedu";
+          case "7":
+            return "Yam";
+          case "8":
+            return "Fried Rice";
+          case "9":
+            return "Chicken Laps";
+          case "10":
+            return "Jollof Rice";
+          case "11":
+            return "Beans";
+          case "12":
+            return "Chicken Fingers";
+          case "13":
+            return "Chicken Wings";
+          case "14":
+            return "White Rice";
+          case "15":
+            return "Macaronni";
+          case "16":
+            return "Pomo";
+          case "17":
+            return "Chicken";
+          case "18":
+            return "Fish";
+          case "19":
+            return "Egg";
+          case "20":
+            return "Goat Meat";
+        }
+      }
+
+      socket.on("connect", () => {
+        localStorage.setItem("sessionId", socket.id);
+        appendMessage(
+          `Welcome to sth restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
+          "bot"
+        );
+      });
+
+      // Attach event listeners
+      sendButton.addEventListener("click", sendMessage);
+      inputField.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      });
+    </script>
+  </body>
+</html>
