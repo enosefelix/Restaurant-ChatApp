@@ -201,7 +201,7 @@
             />
           </div>
           <div class="bot-name">
-            <b><p class="logo">Delight-Full Restaurant</p></b>
+            <b><p class="logo">Sth Restaurant</p></b>
             <p class="status">Online</p>
           </div>
         </div>
@@ -545,11 +545,16 @@
       }
 
       socket.on("connect", () => {
-        localStorage.setItem("sessionId", socket.id);
         appendMessage(
-          `Welcome to Delight-Full restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
+          `Welcome to sth restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
           "bot"
         );
+      });
+
+      // Handle receiving messages from the server
+      socket.on("bot-message", (message) => {
+        appendMessage(message, "bot");
+        chatMessage.save();
       });
 
       // Attach event listeners

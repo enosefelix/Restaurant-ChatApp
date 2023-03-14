@@ -5,16 +5,15 @@ const server = http.createServer(app);
 const session = require('express-session')
 const { Server } = require("socket.io");
 const MemoryStore = require('memorystore')(session);
-require("dotenv").config()
+
 
 const io = new Server(server);
-
 //using the session middleware
 const sessionMiddleware = session({
   store: new MemoryStore({
     checkPeriod: 86400000 // prune expired entries every 24h
   }),
-  secret: process.env.SECRET,
+  secret: 'your-secret-key-here',
   resave: false,
   saveUninitialized: true
 });
@@ -31,16 +30,11 @@ app.get("/", (req, res) => {
 });
 
 let sessionRooms = {};
-let messages = {};
 
 io.on("connection", (socket) => {
   const sessionId = socket.request.session.id;
   console.log("User connected:", socket.id);
   console.log("session id " + sessionId);
-
-  if (!messages[sessionId]) {
-    messages[sessionId] = [];
-  }  
 
   if (sessionRooms.hasOwnProperty(sessionId)) {
     // If session ID doesn't exist, create a new room and add it to sessionRooms object
