@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Restaurant Chatbot</title>
+    <link rel="shortcut icon" href="https://imgs.search.brave.com/LU4Q-vivDB9VQQV6S_mbudSYN2edlw7DgxzOVPDzNa8/rs:fit:650:650:1/g:ce/aHR0cHM6Ly9zdXBw/b3J0LnVwd29yay5j/b20vaGMvYXJ0aWNs/ZV9hdHRhY2htZW50/cy8zNjAwNDA0NzQw/MzQvY2hhdGJvdC1k/YXRhLnBuZw" />
     <style>
       /* Custom scrollbar styles */
       ::-webkit-scrollbar {
@@ -166,9 +167,9 @@
         color: rgb(180, 180, 180);
       }
 
-      @media only screen and (max-width: 600px) {
+      @media only screen and (max-width: 320px) {
         #chatBox {
-          height: 494px;
+          height: 250px;
           padding: 16px;
           display: flex;
           flex-direction: column;
@@ -180,8 +181,128 @@
           font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
             Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
             sans-serif;
-          font-size: 1.2rem;
+          font-size: 0.6rem;
         }
+
+      #chatContainer {
+        width: 300px;
+      }
+
+      #inputContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      #inputField {
+        flex-grow: 1;
+        height: 22px;
+        padding: 0 8px;
+        border: none;
+        border-radius: 1px;
+        background-color: #ffffff;
+        font-size: 8px;
+      }
+
+      #sendButton {
+        margin-left: -90px;
+        height: 20px;
+        width: 40px;
+        border: none;
+        border-radius: 10px;
+        background-color: #ffffff;
+        color: #1e90ff;
+        font-size: 8px;
+        cursor: pointer;
+      }
+
+      .message-outer-container {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        color: white;
+        gap: 10px;
+        align-items: flex-end;
+      }
+
+      .message-outer-container.user {
+        justify-content: flex-end;
+      }
+
+      #bot {
+        padding: 5px 10px;
+        background: #e6e7e7;
+        border-radius: 10px;
+        max-width: 100%;
+        color: rgb(70, 68, 68);
+        position: relative;
+      }
+
+      #bot::before {
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 20px 20px 0px 0px;
+        border-bottom-left-radius: 10px;
+        border-color: transparent #e6e7e7 transparent transparent;
+        bottom: 0px;
+        left: -10px;
+      }
+
+      #user {
+        padding: 5px 10px;
+        background: #5fd3ff;
+        border-radius: 10px;
+        max-width: 100%;
+        color: white;
+        position: relative;
+      }
+
+      #user::after {
+        content: "";
+        position: absolute;
+        border-style: solid;
+        border-width: 20px 0px 0px 20px;
+        border-color: transparent transparent transparent #5fd3ff;
+        border-bottom-right-radius: 10px;
+        bottom: 0px;
+        right: -10px;
+      }
+
+      #bot-name {
+        background-image: linear-gradient(to right, #10c3d6, #04a7f3);
+        height: 30px;
+        margin: 0;
+        padding: 8px 15px;
+        padding-left: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+      }
+
+      .bot-image {
+        width: 20px;
+        padding-top: 3px;
+      }
+
+      .img {
+        max-width: 20px;
+        height: 10px;
+        padding-bottom: 15px;
+      }
+
+      .status {
+        font-size: x-small;
+        margin-top: -12px;
+      }
+
+      .timestamp {
+        font-size: 0.65em;
+        color: rgb(180, 180, 180);
+      }
       }
     </style>
     <script
@@ -201,7 +322,7 @@
             />
           </div>
           <div class="bot-name">
-            <b><p class="logo">Sth Restaurant</p></b>
+            <b><p class="logo">Delight-Full Restaurant</p></b>
             <p class="status">Online</p>
           </div>
         </div>
@@ -220,6 +341,7 @@
     </main>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
+
       // Establish a socket connection to the server
       const socket = io(window.location.origin, {
         query: {
@@ -240,8 +362,8 @@
         messageElement.id = sender;
         messageElement.textContent = message;
 
-        const timestamp = new Date().toLocaleTimeString(); // create timestamp
-        const timestampElement = document.createElement("span"); // create span element for timestamp
+        const timestamp = new Date().toLocaleTimeString();
+        const timestampElement = document.createElement("span");
         timestampElement.className = "timestamp";
         timestampElement.textContent = timestamp;
 
@@ -253,7 +375,7 @@
         messageContainer.appendChild(messageElement);
         messageContainer.appendChild(timestampElement);
 
-        // Append image element if sender is "bot"
+        // Append an image element if sender is "bot"
         if (sender === "bot") {
           const botImg = document.createElement("img");
           botImg.className = "chat-bot-image img";
@@ -262,7 +384,7 @@
           messageOuterContainer.appendChild(botImg);
           messageOuterContainer.appendChild(messageContainer);
         }
-        // Append image element if sender is "bot"
+        // Append an image element if sender is "bot"
         else if (sender === "user") {
           messageOuterContainer.appendChild(messageContainer);
           const userImg = document.createElement("img");
@@ -298,7 +420,7 @@
             );
             isPlacingOrder = true;
           } else if (message === "98") {
-            // User wants to see order history
+            //When a  User wants to see their order history
             if (order_history.length < 1) {
               socket.emit(
                 "bot-message",
@@ -327,7 +449,8 @@
                 message === "19" ||
                 message === "20"
               ) {
-                // User has selected an item to order
+
+                //When a  User has selected an item to order
                 current_order.push(getItemName(message));
                 socket.emit(
                   "bot-message",
@@ -382,7 +505,7 @@
           }
           inputField.value = "";
         } else {
-          // User is currently placing an order
+          //If User is currently placing an order
           if (
             message === "1" ||
             message === "2" ||
@@ -405,7 +528,8 @@
             message === "19" ||
             message === "20"
           ) {
-            // User has selected an item to order
+
+            //When a  User has selected an item to order
             current_order.push(getItemName(message));
             socket.emit(
               "bot-message",
@@ -413,7 +537,8 @@
         Do you want to add more items to your order?\n Select the options below\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
             );
           } else if (message === "99") {
-            // User wants to checkout
+
+            // If a User wants to checkout
             if (current_order.length < 1) {
               socket.emit(
                 "bot-message",
@@ -443,8 +568,8 @@
                 )}\n98: Order History\n99: Checkout\n0: Cancel Order`
               );
             }
+            //If a User wants to see their order history
           } else if (message === "98") {
-            // User wants to see order history
             if (order_history.length < 1) {
               socket.emit(
                 "bot-message",
@@ -472,8 +597,9 @@
                 );
               }
             }
+
+            //If User wants to cancel the order
           } else if (message === "0") {
-            // User wants to cancel the order
             if (order_history.length < 1) {
               socket.emit(
                 "bot-message",
@@ -546,18 +672,18 @@
 
       socket.on("connect", () => {
         appendMessage(
-          `Welcome to sth restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
+          `Welcome to Delight-Full restaurant\n Select\n1: To Place an order\n97: Current Order\n 98: Order History`,
           "bot"
         );
       });
 
-      // Handle receiving messages from the server
+      // Handling receiving messages from the server
       socket.on("bot-message", (message) => {
         appendMessage(message, "bot");
         chatMessage.save();
       });
 
-      // Attach event listeners
+      // Attaching event listeners
       sendButton.addEventListener("click", sendMessage);
       inputField.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
