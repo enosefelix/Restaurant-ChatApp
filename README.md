@@ -25,8 +25,8 @@ Select 0 to cancel order
 
 ---
 ## Setup
-- run `npm install` to install all dependencies
 - pull this repo
+- run `npm install` to install all dependencies
 - update env with example.env
 - run `npm run start` on the CLI
 

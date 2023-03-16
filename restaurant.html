@@ -31,7 +31,8 @@
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
           sans-serif;
-        line-height: 1.5;
+        line-height: 1.3;
+        font-size: 13px;
       }
 
       #chatContainer {
@@ -159,7 +160,7 @@
 
       .status {
         font-size: small;
-        margin-top: -20px;
+        margin-top: -12px;
       }
 
       .timestamp {
@@ -416,7 +417,7 @@
             // User wants to start placing an order
             socket.emit(
               "bot-message",
-              "Here is a list of items you can order:\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History"
+              "Here is a list of items you can order:\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History"
             );
             isPlacingOrder = true;
           } else if (message === "98") {
@@ -424,7 +425,7 @@
             if (order_history.length < 1) {
               socket.emit(
                 "bot-message",
-                "Wow Such empty\n\nSelect below to Order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n 97: Current Order\n99: Checkout"
+                "Wow Such empty\n\nSelect below to Order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n 97: Current Order\n99: Checkout"
               );
               isPlacingOrder = true;
               if (
@@ -441,13 +442,7 @@
                 message === "11" ||
                 message === "12" ||
                 message === "13" ||
-                message === "14" ||
-                message === "15" ||
-                message === "16" ||
-                message === "17" ||
-                message === "18" ||
-                message === "19" ||
-                message === "20"
+                message === "14"
               ) {
 
                 //When a  User has selected an item to order
@@ -455,7 +450,7 @@
                 socket.emit(
                   "bot-message",
                   `${getItemName(message)} has been added to your order.\n
-        Do you want to add more items to your order?\n Select the options below\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
+        Do you want to add more items to your order?\n Select the options below\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
                 );
               }
             } else if (order_history.length > 0) {
@@ -477,7 +472,7 @@
                   arr[i] + " Order: " + order_history[i].join(", ") + "\n";
                 socket.emit(
                   "bot-message",
-                  `${orderHistoryMessage}\n\nSelect below to continue order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n99: Checkout\n0: Cancel Order`
+                  `${orderHistoryMessage}\n\nSelect below to continue order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n97: Current Order\n99: Checkout\n0: Cancel Order`
                 );
               }
             }
@@ -486,7 +481,7 @@
               isPlacingOrder = true;
               socket.emit(
                 "bot-message",
-                "No current order\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n98: Order History\n99: Checkout"
+                "No current order\nSelect below to place an order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n98: Order History\n99: Checkout"
               );
             } else {
               isPlacingOrder = true;
@@ -520,13 +515,7 @@
             message === "11" ||
             message === "12" ||
             message === "13" ||
-            message === "14" ||
-            message === "15" ||
-            message === "16" ||
-            message === "17" ||
-            message === "18" ||
-            message === "19" ||
-            message === "20"
+            message === "14"
           ) {
 
             //When a  User has selected an item to order
@@ -534,7 +523,7 @@
             socket.emit(
               "bot-message",
               `${getItemName(message)} has been added to your order.\n
-        Do you want to add more items to your order?\n Select the options below\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
+        Do you want to add more items to your order?\n Select the options below\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n If not:\n 97: Current Order\n 98: Order History\n99: Checkout`
             );
           } else if (message === "99") {
 
@@ -542,7 +531,7 @@
             if (current_order.length < 1) {
               socket.emit(
                 "bot-message",
-                "No order to place.\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n 98: Order History"
+                "No order to place.\nSelect below to place an order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n97: Current Order\n 98: Order History"
               );
             } else {
               socket.emit(
@@ -558,7 +547,7 @@
             if (current_order.length < 1) {
               socket.emit(
                 "bot-message",
-                "No current order\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n 98: Order History\n99: Checkout"
+                "No current order\nSelect below to place an order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n 98: Order History\n99: Checkout"
               );
             } else {
               socket.emit(
@@ -573,7 +562,7 @@
             if (order_history.length < 1) {
               socket.emit(
                 "bot-message",
-                "Wow Such empty\n\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n99: Checkout"
+                "Wow Such empty\n\nSelect below to place an order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n97: Current Order\n99: Checkout"
               );
             } else if (order_history.length > 0) {
               let orderHistoryMessage = "";
@@ -593,7 +582,7 @@
                   arr[i] + " Order: " + order_history[i].join(", ") + "\n";
                 socket.emit(
                   "bot-message",
-                  `${orderHistoryMessage}\n\nSelect below to continue order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n99: Checkout\n0: Cancel Order`
+                  `${orderHistoryMessage}\n\nSelect below to continue order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n97: Current Order\n99: Checkout\n0: Cancel Order`
                 );
               }
             }
@@ -603,7 +592,7 @@
             if (order_history.length < 1) {
               socket.emit(
                 "bot-message",
-                "No order to cancel\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n 97: Current Order\n 98: Order History"
+                "No order to cancel\nSelect below to place an order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n 97: Current Order\n 98: Order History"
               );
             } else {
               isPlacingOrder = false;
@@ -616,7 +605,7 @@
           } else {
             socket.emit(
               "bot-message",
-              "Invalid input\nSelect below to place an order\n1: Italian Rice\n2: NoodlesEgg\n3: Spaghetti\n4: Bread and Beans\n5: Semo and Egusi\n6: Amala and Ewedu\n7: Yam and Egg\n8: Fried Rice\n9: Chicken Laps\n10: Jollof Rice\n11: Beans\n12: Chicken Fingers\n13: Chicken Wings\n14: White Rice\n15: Macaronni\n16: Pomo\n17: Chicken\n18: Fish\n19: Egg\n20: Goat Meat\n\n97: Current Order\n 98: Order History\n 0: Cancel Order"
+              "Invalid input\nSelect below to place an order\n1: Noodles\n2: Spaghetti\n3: Bread and Beans\n4: Yam and Egg\n5: Fried Rice\n6: Jollof Rice\n7: Beans\n8: White Rice\n9: Macaronni\n10: Pomo\n11: Chicken\n12: Fish\n13: Egg\n14: Goat Meat\n\n97: Current Order\n 98: Order History\n 0: Cancel Order"
             );
           }
           inputField.value = "";
@@ -628,44 +617,32 @@
       function getItemName(itemNumber) {
         switch (itemNumber) {
           case "1":
-            return "Italian Rice";
-          case "2":
             return "Noodles";
+          case "2":
+            return "Spagetti";
           case "3":
-            return "Spaghetti";
-          case "4":
             return "Bread and Beans";
+          case "4":
+            return "Yam and Egg";
           case "5":
-            return "Semo and Egusi";
+            return "Fired Rice";
           case "6":
-            return "Amala and Ewedu";
-          case "7":
-            return "Yam";
-          case "8":
-            return "Fried Rice";
-          case "9":
-            return "Chicken Laps";
-          case "10":
             return "Jollof Rice";
-          case "11":
+          case "7":
             return "Beans";
-          case "12":
-            return "Chicken Fingers";
-          case "13":
-            return "Chicken Wings";
-          case "14":
+          case "8":
             return "White Rice";
-          case "15":
+          case "9":
             return "Macaronni";
-          case "16":
+          case "10":
             return "Pomo";
-          case "17":
+          case "11":
             return "Chicken";
-          case "18":
+          case "12":
             return "Fish";
-          case "19":
+          case "13":
             return "Egg";
-          case "20":
+          case "14":
             return "Goat Meat";
         }
       }
